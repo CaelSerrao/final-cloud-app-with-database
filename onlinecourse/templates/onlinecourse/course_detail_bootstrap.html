@@ -50,18 +50,32 @@
                     </div>
                 {% endfor %}
             </div>
-            <!-- Task: show questions and choices -->
-            <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
-            https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#exam">START EXAM</button>
+            <!--https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
 
-            <!--
 
-            A collapse example here:
+            <!--A collapse example here:--->
             <div id="exam" class="collapse">
-                Click to expand elements within the collapse div
+                <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
+                {% for question in course.question_set.all %}
+                <div class="card mt-1">
+                    <div class="card-header">{{ question.question }}</div>
+                    {% csrf_token %}
+                        <div class="form-group">
+                            {% for choice in question.choice_set.all %}
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="choice_{{choice.id}}"
+                                           class="form-check-input" id="{{choice.id}}"
+                                           value="{{choice.id}}">{{ choice.choices }}
+                                </label>
+                            </div> {% endfor%}
+                        </div>
+                    </div> {% endfor %}
+                    <input class="btn-success" type="submit" value="Submit">
+                </form>
                 </div>
 
-            -->
 
             <!-- <HINT> If user is authenticated, show course exam with a list of question -->
 
