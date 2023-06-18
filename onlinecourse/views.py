@@ -105,7 +105,7 @@ def enroll(request, course_id):
 
 
 def submit(request, course_id):
-    if method.request == 'POST':
+    if request.method == 'POST':
         course = get_object_or_404(Course, pk=course_id)
         question= Question.objects.filter(course=course)
         enrollment = Enrollment.objects.get(user=user, course=course)
@@ -130,7 +130,7 @@ def submit(request, course_id):
 
 
 
-def show_exam_result(request, course_id, submission_id):\
+def show_exam_result(request, course_id, submission_id):
     user=request.user
     course = get_object_or_404(Course, pk=course_id)
     submission= Submission.object.get(course=course)
@@ -141,8 +141,8 @@ def show_exam_result(request, course_id, submission_id):\
     for choice in choices:
         if choice.iscorrect:
             user_score+=choice.question.grade
-     for question in questions:
-         total_score+=question.grade
+    for question in questions:
+        total_score+=question.grade
 
     return render(request, 'onlinecourse/exam_result_bootstrap.html', {"user":user, "course":course, "grade":user_score,"choices":choices, "total":total_score})  
 
